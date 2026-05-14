@@ -28,10 +28,23 @@
             </div>
 
             <div class="mb-3">
-                <label class="form-label d-flex justify-content-between">
-                    <span>Ratio VG / PG</span>
-                    <strong id="ratio-display" class="text-primary">60 / 40</strong>
-                </label>
+                <label class="form-label">Ratio VG / PG</label>
+                <div class="row g-2 mb-2">
+                    <div class="col-6">
+                        <label class="form-label small">VG %</label>
+                        <div class="input-group input-group-sm">
+                            <input type="number" id="in-vg-percent" class="form-control" value="60" min="0" max="100" step="1">
+                            <span class="input-group-text">%</span>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <label class="form-label small">PG %</label>
+                        <div class="input-group input-group-sm">
+                            <input type="number" id="in-pg-percent" class="form-control" value="40" min="0" max="100" step="1">
+                            <span class="input-group-text">%</span>
+                        </div>
+                    </div>
+                </div>
                 <input type="range" id="in-ratio" class="form-range" min="0" max="100" value="60" step="1">
                 <div class="d-flex justify-content-between text-muted small mt-1">
                     <span>0% VG (100% PG)</span>

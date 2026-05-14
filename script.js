@@ -15,15 +15,14 @@ let state = {
 const el = {
     inVol: document.getElementById('in-volume'),
     inRatio: document.getElementById('in-ratio'),
+    inVgPercent: document.getElementById('in-vg-percent'),
+    inPgPercent: document.getElementById('in-pg-percent'),
     inUseNic: document.getElementById('in-use-nic'),
     inNicBooster: document.getElementById('in-nic-booster'),
     inNicTarget: document.getElementById('in-nic-target'),
     outBooster: document.getElementById('out-booster'),
     outVg: document.getElementById('out-vg'),
     outPg: document.getElementById('out-pg'),
-    ratioDisplay: document.getElementById('ratio-display'),
-    nicSection: document.getElementById('nicotine-section'),
-    outBoosterContainer: document.getElementById('out-booster-container'),
     boosterRatioText: document.getElementById('booster-ratio-text'),
     formulasDisplay: document.getElementById('formulas-display'),
     optiContainer: document.getElementById('optimization-container'),
@@ -111,12 +110,16 @@ function calculateReverse(source) {
 function updateUIInputs() {
     el.inVol.value = round2(state.volume);
     el.inRatio.value = Math.round(state.ratioVg);
-    el.ratioDisplay.innerText = `${Math.round(state.ratioVg)} / ${100 - Math.round(state.ratioVg)}`;
-    el.boosterRatioText.innerText = el.ratioDisplay.innerText;
+    el.inVgPercent.value = Math.round(state.ratioVg);
+    el.inPgPercent.value = 100 - Math.round(state.ratioVg);
+    el.boosterRatioText.innerText = `${Math.round(state.ratioVg)}/${100 - Math.round(state.ratioVg)}`;
     el.inNicTarget.value = round2(state.nicTarget);
     
     // Afficher/Cacher la carte de sevrage
-    el.sevrageContainer.style.display = (state.useNicotine && state.nicTarget > 0) ? 'block' : 'none';
+    const sevrageContainer = document.getElementById('sevrage-container');
+    if (sevrageContainer) {
+        sevrageContainer.style.display = (state.useNicotine && state.nicTarget > 0) ? 'block' : 'none';
+    }
 }
 
 function updateUIOutputs() {
@@ -207,13 +210,33 @@ function showAlert(msg, type="success") {
 // -- Event Listeners Entrées (Forward) --
 el.inVol.addEventListener('input', (e) => { state.volume = parseFloat(e.target.value) || 0; calculateForward(); });
 el.inRatio.addEventListener('input', (e) => { state.ratioVg = parseFloat(e.target.value) || 0; calculateForward(); });
+
+// 3-way sync for VG/PG percentages
+el.inVgPercent.addEventListener('input', (e) => { 
+    let vg = parseFloat(e.target.value) || 0;
+    if (vg < 0) vg = 0;
+    if (vg > 100) vg = 100;
+    state.ratioVg = vg;
+    calculateForward();
+});
+
+el.inPgPercent.addEventListener('input', (e) => { 
+    let pg = parseFloat(e.target.value) || 0;
+    if (pg < 0) pg = 0;
+    if (pg > 100) pg = 100;
+    state.ratioVg = 100 - pg;
+    calculateForward();
+});
+
 el.inNicBooster.addEventListener('input', (e) => { state.nicBooster = parseFloat(e.target.value) || 1; calculateForward(); });
 el.inNicTarget.addEventListener('input', (e) => { state.nicTarget = parseFloat(e.target.value) || 0; calculateForward(); });
 
 el.inUseNic.addEventListener('change', (e) => {
     state.useNicotine = e.target.checked;
-    el.nicSection.style.display = state.useNicotine ? 'block' : 'none';
-    el.outBoosterContainer.style.display = state.useNicotine ? 'block' : 'none';
+    const nicSection = document.getElementById('nicotine-section');
+    const outBoosterContainer = document.getElementById('out-booster-container');
+    if (nicSection) nicSection.style.display = state.useNicotine ? 'block' : 'none';
+    if (outBoosterContainer) outBoosterContainer.style.display = state.useNicotine ? 'block' : 'none';
     calculateForward();
 });
 
@@ -278,8 +301,10 @@ window.loadHistoryItem = function(id) {
         
         // Re-sync UI manually for checkboxes
         el.inUseNic.checked = state.useNicotine;
-        el.nicSection.style.display = state.useNicotine ? 'block' : 'none';
-        el.outBoosterContainer.style.display = state.useNicotine ? 'block' : 'none';
+        const nicSection = document.getElementById('nicotine-section');
+        const outBoosterContainer = document.getElementById('out-booster-container');
+        if (nicSection) nicSection.style.display = state.useNicotine ? 'block' : 'none';
+        if (outBoosterContainer) outBoosterContainer.style.display = state.useNicotine ? 'block' : 'none';
         
         calculateForward(); // Recalculate to ensure UI syncs perfectly
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -300,8 +325,10 @@ document.getElementById('btn-sevrage').addEventListener('click', () => {
     
     // Sync UI toggles if it hit 0
     el.inUseNic.checked = state.useNicotine;
-    el.nicSection.style.display = state.useNicotine ? 'block' : 'none';
-    el.outBoosterContainer.style.display = state.useNicotine ? 'block' : 'none';
+    const nicSection = document.getElementById('nicotine-section');
+    const outBoosterContainer = document.getElementById('out-booster-container');
+    if (nicSection) nicSection.style.display = state.useNicotine ? 'block' : 'none';
+    if (outBoosterContainer) outBoosterContainer.style.display = state.useNicotine ? 'block' : 'none';
 
     calculateForward();
     saveHistory(true);
@@ -316,8 +343,10 @@ function init() {
     if(history.length > 0) {
         state = JSON.parse(JSON.stringify(history[0].state));
         el.inUseNic.checked = state.useNicotine;
-        el.nicSection.style.display = state.useNicotine ? 'block' : 'none';
-        el.outBoosterContainer.style.display = state.useNicotine ? 'block' : 'none';
+        const nicSection = document.getElementById('nicotine-section');
+        const outBoosterContainer = document.getElementById('out-booster-container');
+        if (nicSection) nicSection.style.display = state.useNicotine ? 'block' : 'none';
+        if (outBoosterContainer) outBoosterContainer.style.display = state.useNicotine ? 'block' : 'none';
     }
     
     calculateForward();
