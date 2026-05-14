@@ -1,0 +1,5 @@
+node_modules/
+test_with_*.js
+test_functionality.js
+package.json
+package-lock.json
