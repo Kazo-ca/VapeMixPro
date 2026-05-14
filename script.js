@@ -192,9 +192,20 @@ function generateFormulas() {
     el.formulasDisplay.innerHTML = text;
 }
 
-// Helper mathématique
+// Helper functions
 function round2(num) {
     return Math.round((num + Number.EPSILON) * 100) / 100;
+}
+
+function clamp(value, min, max) {
+    return Math.max(min, Math.min(max, value));
+}
+
+function toggleNicotineSections(visible) {
+    const nicSection = document.getElementById('nicotine-section');
+    const outBoosterContainer = document.getElementById('out-booster-container');
+    if (nicSection) nicSection.style.display = visible ? 'block' : 'none';
+    if (outBoosterContainer) outBoosterContainer.style.display = visible ? 'block' : 'none';
 }
 
 function showAlert(msg, type="success") {
@@ -214,16 +225,14 @@ el.inRatio.addEventListener('input', (e) => { state.ratioVg = parseFloat(e.targe
 // 3-way sync for VG/PG percentages
 el.inVgPercent.addEventListener('input', (e) => { 
     let vg = parseFloat(e.target.value) || 0;
-    if (vg < 0) vg = 0;
-    if (vg > 100) vg = 100;
+    vg = clamp(vg, 0, 100);
     state.ratioVg = vg;
     calculateForward();
 });
 
 el.inPgPercent.addEventListener('input', (e) => { 
     let pg = parseFloat(e.target.value) || 0;
-    if (pg < 0) pg = 0;
-    if (pg > 100) pg = 100;
+    pg = clamp(pg, 0, 100);
     state.ratioVg = 100 - pg;
     calculateForward();
 });
@@ -233,10 +242,7 @@ el.inNicTarget.addEventListener('input', (e) => { state.nicTarget = parseFloat(e
 
 el.inUseNic.addEventListener('change', (e) => {
     state.useNicotine = e.target.checked;
-    const nicSection = document.getElementById('nicotine-section');
-    const outBoosterContainer = document.getElementById('out-booster-container');
-    if (nicSection) nicSection.style.display = state.useNicotine ? 'block' : 'none';
-    if (outBoosterContainer) outBoosterContainer.style.display = state.useNicotine ? 'block' : 'none';
+    toggleNicotineSections(state.useNicotine);
     calculateForward();
 });
 
@@ -301,10 +307,7 @@ window.loadHistoryItem = function(id) {
         
         // Re-sync UI manually for checkboxes
         el.inUseNic.checked = state.useNicotine;
-        const nicSection = document.getElementById('nicotine-section');
-        const outBoosterContainer = document.getElementById('out-booster-container');
-        if (nicSection) nicSection.style.display = state.useNicotine ? 'block' : 'none';
-        if (outBoosterContainer) outBoosterContainer.style.display = state.useNicotine ? 'block' : 'none';
+        toggleNicotineSections(state.useNicotine);
         
         calculateForward(); // Recalculate to ensure UI syncs perfectly
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -325,10 +328,7 @@ document.getElementById('btn-sevrage').addEventListener('click', () => {
     
     // Sync UI toggles if it hit 0
     el.inUseNic.checked = state.useNicotine;
-    const nicSection = document.getElementById('nicotine-section');
-    const outBoosterContainer = document.getElementById('out-booster-container');
-    if (nicSection) nicSection.style.display = state.useNicotine ? 'block' : 'none';
-    if (outBoosterContainer) outBoosterContainer.style.display = state.useNicotine ? 'block' : 'none';
+    toggleNicotineSections(state.useNicotine);
 
     calculateForward();
     saveHistory(true);
@@ -343,10 +343,7 @@ function init() {
     if(history.length > 0) {
         state = JSON.parse(JSON.stringify(history[0].state));
         el.inUseNic.checked = state.useNicotine;
-        const nicSection = document.getElementById('nicotine-section');
-        const outBoosterContainer = document.getElementById('out-booster-container');
-        if (nicSection) nicSection.style.display = state.useNicotine ? 'block' : 'none';
-        if (outBoosterContainer) outBoosterContainer.style.display = state.useNicotine ? 'block' : 'none';
+        toggleNicotineSections(state.useNicotine);
     }
     
     calculateForward();
