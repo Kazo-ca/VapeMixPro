@@ -1,4 +1,5 @@
 node_modules/
-test_*.js
-test_*.html
+test_with_*.js
+test_functionality.js
+package.json
 package-lock.json
