@@ -1,9 +1,31 @@
 <!DOCTYPE html>
-<html lang="fr" data-bs-theme="dark">
+<html lang="en" data-bs-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VapeMix Pro - Calculateur e-liquide</title>
+    <title>VapeMix Pro - E-Liquid Calculator</title>
+    <meta name="description" content="Free DIY e-liquid calculator. Compute exact VG, PG and nicotine booster volumes for your perfect vape mix recipe.">
+    <meta name="keywords" content="e-liquid calculator, DIY vape, VG PG ratio, nicotine booster, vape recipe, e-juice mix">
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" content="VapeMix Pro - E-Liquid Calculator">
+    <meta property="og:description" content="Free DIY e-liquid calculator. Compute exact VG, PG and nicotine booster volumes for your perfect vape mix recipe.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://vapemixpro.kazo.ca/">
+    <meta property="og:site_name" content="VapeMix Pro">
+    <link rel="canonical" href="https://vapemixpro.kazo.ca/">
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "VapeMix Pro",
+        "description": "Free DIY e-liquid calculator for vaping enthusiasts.",
+        "url": "https://vapemixpro.kazo.ca/",
+        "applicationCategory": "UtilitiesApplication",
+        "operatingSystem": "Any",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+        "inLanguage": ["en", "fr"]
+    }
+    </script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
@@ -11,34 +33,47 @@
 <body>
 
 <div class="container mt-4">
-    <h2 class="text-center mb-4"><i class="fa-solid fa-flask text-primary"></i> VapeMix Pro</h2>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="mb-0"><i class="fa-solid fa-flask text-primary"></i> VapeMix Pro</h2>
+        <button class="btn btn-sm btn-outline-secondary" id="btn-lang" aria-label="Switch language">FR</button>
+    </div>
+
+    <!-- Intro Card -->
+    <div class="card intro-card mb-4">
+        <div class="card-body">
+            <h1 class="h5 mb-2" data-i18n="introTitle">DIY E-Liquid Calculator</h1>
+            <p class="text-muted small mb-0" data-i18n="introText">VapeMix Pro is a free e-liquid calculator for DIY vaping enthusiasts. Enter your desired volume, VG/PG ratio and nicotine level to instantly get the exact quantities needed to create your perfect custom e-liquid recipe.</p>
+        </div>
+    </div>
 
     <!-- Alert Container -->
-    <div id="alertContainer"></div>
+    <div id="alertContainer" role="alert" aria-live="polite"></div>
 
     <div class="card">
-        <div class="card-header"><i class="fa-solid fa-sliders"></i> Configuration Principale</div>
+        <div class="card-header"><i class="fa-solid fa-sliders"></i> <span data-i18n="configTitle">Main Configuration</span></div>
         <div class="card-body">
             <div class="mb-3">
-                <label class="form-label">Volume total désiré (ml)</label>
+                <label class="form-label" for="in-volume" data-i18n="labelVolume">Desired total volume (ml)</label>
                 <div class="input-group">
-                    <input type="number" id="in-volume" class="form-control" value="50" min="1" step="1">
+                    <button class="btn btn-stepper" id="btn-vol-dec" type="button" aria-label="Decrease volume"><i class="fa-solid fa-minus"></i></button>
+                    <input type="number" id="in-volume" class="form-control text-center" value="50" min="1" step="1">
+                    <button class="btn btn-stepper" id="btn-vol-inc" type="button" aria-label="Increase volume"><i class="fa-solid fa-plus"></i></button>
                     <span class="input-group-text">ml</span>
                 </div>
             </div>
 
             <div class="mb-3">
-                <label class="form-label">Ratio VG / PG</label>
+                <label class="form-label" data-i18n="labelRatio">VG / PG Ratio</label>
                 <div class="row g-2 mb-2">
                     <div class="col-6">
-                        <label class="form-label small">VG %</label>
+                        <label class="form-label small" for="in-vg-percent" data-i18n="labelVgPct">VG %</label>
                         <div class="input-group input-group-sm">
                             <input type="number" id="in-vg-percent" class="form-control" value="60" min="0" max="100" step="1">
                             <span class="input-group-text">%</span>
                         </div>
                     </div>
                     <div class="col-6">
-                        <label class="form-label small">PG %</label>
+                        <label class="form-label small" for="in-pg-percent" data-i18n="labelPgPct">PG %</label>
                         <div class="input-group input-group-sm">
                             <input type="number" id="in-pg-percent" class="form-control" value="40" min="0" max="100" step="1">
                             <span class="input-group-text">%</span>
@@ -47,35 +82,35 @@
                 </div>
                 <input type="range" id="in-ratio" class="form-range" min="0" max="100" value="60" step="1">
                 <div class="d-flex justify-content-between text-muted small mt-1">
-                    <span>0% VG (100% PG)</span>
-                    <span>100% VG (0% PG)</span>
+                    <span data-i18n="rangeLeft">0% VG (100% PG)</span>
+                    <span data-i18n="rangeRight">100% VG (0% PG)</span>
                 </div>
             </div>
         </div>
     </div>
 
     <div class="card">
-        <div class="card-header bg-secondary"><i class="fa-solid fa-droplet"></i> Nicotine (Optionnel)</div>
+        <div class="card-header bg-secondary"><i class="fa-solid fa-droplet"></i> <span data-i18n="nicTitle">Nicotine (Optional)</span></div>
         <div class="card-body">
             <div class="form-check form-switch mb-3">
                 <input class="form-check-input" type="checkbox" id="in-use-nic">
-                <label class="form-check-label" for="in-use-nic">Ajouter de la nicotine</label>
+                <label class="form-check-label" for="in-use-nic" data-i18n="nicToggle">Add nicotine</label>
             </div>
 
             <div id="nicotine-section" style="display: none;">
-                <div class="alert alert-info py-2 small">
-                    <i class="fa-solid fa-circle-info"></i> Nous assumons que le booster (liquide nicotiné) possède le même ratio VG/PG (<span id="booster-ratio-text">60/40</span>) que votre cible.
+                <div class="alert alert-info py-2 small" id="booster-note">
+                    <i class="fa-solid fa-circle-info"></i> We assume the booster (nicotine liquid) has the same VG/PG ratio (<span id="booster-ratio-text">60/40</span>) as your target.
                 </div>
                 <div class="row g-2">
                     <div class="col-6">
-                        <label class="form-label small">Concentration Booster</label>
+                        <label class="form-label small" for="in-nic-booster" data-i18n="labelBoosterConc">Booster Concentration</label>
                         <div class="input-group input-group-sm">
                             <input type="number" id="in-nic-booster" class="form-control" value="20" min="1" step="0.5">
                             <span class="input-group-text">mg/ml</span>
                         </div>
                     </div>
                     <div class="col-6">
-                        <label class="form-label small">Cible désirée</label>
+                        <label class="form-label small" for="in-nic-target" data-i18n="labelNicTarget">Desired target</label>
                         <div class="input-group input-group-sm">
                             <input type="number" id="in-nic-target" class="form-control" value="3" min="0" step="0.1">
                             <span class="input-group-text">mg/ml</span>
@@ -87,12 +122,12 @@
     </div>
 
     <div class="card border-primary">
-        <div class="card-header bg-primary"><i class="fa-solid fa-check-to-slot"></i> Résultats (Recette)</div>
+        <div class="card-header bg-primary"><i class="fa-solid fa-check-to-slot"></i> <span data-i18n="resultsTitle">Results (Recipe)</span></div>
         <div class="card-body">
-            <p class="text-muted small mb-3"><i class="fa-solid fa-pen"></i> <em>Vous pouvez modifier les valeurs ci-dessous pour recalculer la recette à l'envers.</em></p>
+            <p class="text-muted small mb-3"><i class="fa-solid fa-pen"></i> <em data-i18n="resultsHint">You can edit the values below to reverse-calculate the recipe.</em></p>
             
             <div class="mb-3" id="out-booster-container" style="display: none;">
-                <label class="form-label">Booster Nicotiné</label>
+                <label class="form-label" data-i18n="labelBooster">Nicotine Booster</label>
                 <div class="input-group">
                     <span class="input-group-text bg-danger text-white border-danger"><i class="fa-solid fa-skull-crossbones"></i></span>
                     <input type="number" id="out-booster" class="form-control result-input border-danger text-danger" step="0.1">
@@ -102,14 +137,14 @@
 
             <div class="row g-2 mb-3">
                 <div class="col-6">
-                    <label class="form-label">Glycérine (VG)</label>
+                    <label class="form-label" data-i18n="labelVg">Vegetable Glycerine (VG)</label>
                     <div class="input-group">
                         <input type="number" id="out-vg" class="form-control result-input" step="0.1">
                         <span class="input-group-text">ml</span>
                     </div>
                 </div>
                 <div class="col-6">
-                    <label class="form-label">Propylène (PG)</label>
+                    <label class="form-label" data-i18n="labelPg">Propylene Glycol (PG)</label>
                     <div class="input-group">
                         <input type="number" id="out-pg" class="form-control result-input" step="0.1">
                         <span class="input-group-text">ml</span>
@@ -123,7 +158,7 @@
                 <div class="accordion-item bg-dark border-secondary">
                     <h2 class="accordion-header">
                         <button class="accordion-button collapsed bg-dark text-light" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCalc">
-                            <i class="fa-solid fa-calculator me-2"></i> Voir les calculs
+                            <i class="fa-solid fa-calculator me-2"></i> <span data-i18n="showCalcs">Show calculations</span>
                         </button>
                     </h2>
                     <div id="collapseCalc" class="accordion-collapse collapse" data-bs-parent="#calcAccordion">
@@ -134,17 +169,17 @@
                 </div>
             </div>
             
-            <button class="btn btn-primary w-100 mt-3" id="btn-save"><i class="fa-solid fa-floppy-disk"></i> Sauvegarder ce mélange</button>
+            <button class="btn btn-primary w-100 mt-3" id="btn-save"><i class="fa-solid fa-floppy-disk"></i> <span data-i18n="btnSave">Save this mix</span></button>
         </div>
     </div>
 
     <div class="card sevrage-card" id="sevrage-container" style="display: none;">
-        <div class="card-header sevrage-header"><i class="fa-solid fa-heart-pulse"></i> Programme de Sevrage</div>
+        <div class="card-header sevrage-header"><i class="fa-solid fa-heart-pulse"></i> <span data-i18n="sevrageTitle">Nicotine Reduction Program</span></div>
         <div class="card-body">
-            <p class="small text-light">Réduisez progressivement votre dépendance à la nicotine. Choisissez la quantité à soustraire de votre cible actuelle pour ce nouveau mélange.</p>
+            <p class="small text-light" data-i18n="sevrageDesc">Progressively reduce your nicotine dependency. Choose the amount to subtract from your current target for this new mix.</p>
             <div class="row align-items-center">
                 <div class="col-7">
-                    <label class="form-label small">Réduction</label>
+                    <label class="form-label small" for="in-sevrage-step" data-i18n="labelReduction">Reduction</label>
                     <div class="input-group">
                         <span class="input-group-text bg-dark text-danger"><i class="fa-solid fa-arrow-down"></i></span>
                         <input type="number" id="in-sevrage-step" class="form-control" value="0.5" min="0.1" step="0.1">
@@ -152,18 +187,18 @@
                     </div>
                 </div>
                 <div class="col-5 text-end">
-                    <button class="btn btn-sevrage w-100 mt-4" id="btn-sevrage">Réduire <i class="fa-solid fa-check"></i></button>
+                    <button class="btn btn-sevrage w-100 mt-4" id="btn-sevrage"><span data-i18n="btnReduce">Reduce</span> <i class="fa-solid fa-check"></i></button>
                 </div>
             </div>
         </div>
     </div>
 
     <div class="card">
-        <div class="card-header bg-dark text-light border-secondary"><i class="fa-solid fa-clock-rotate-left"></i> Historique des mélanges</div>
+        <div class="card-header bg-dark text-light border-secondary"><i class="fa-solid fa-clock-rotate-left"></i> <span data-i18n="historyTitle">Mix History</span></div>
         <div class="card-body p-2">
             <div class="list-group list-group-flush" id="history-list">
                 <!-- Populated by JS -->
-                <div class="text-center text-muted p-3">Aucun historique</div>
+                <div class="text-center text-muted p-3" data-i18n="noHistory">No history yet</div>
             </div>
         </div>
     </div>
