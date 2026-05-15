@@ -83,7 +83,7 @@ const translations = {
         alertSaved: "Mélange sauvegardé dans l'historique !",
         alertSevrageSaved: 'Mélange de réduction sauvegardé avec succès !',
         alertLoaded: 'Historique chargé.',
-        alertZeroNic: 'Félicitation ! Votre taux de nicotine a atteint 0 !',
+        alertZeroNic: 'Félicitations ! Votre taux de nicotine a atteint 0 !',
         badgeSevrage: 'Sevrage',
         optiMeasureTitle: 'Optimisation de mesure :',
         optiMeasureText: 'Mesurer %VAL% ml est difficile. Si vous visez <strong>%IDEAL% mg/ml</strong> de nicotine à la place de %CURRENT%, vous utiliserez exactement <strong>%ROUND% ml</strong> de booster.',
