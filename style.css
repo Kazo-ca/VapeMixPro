@@ -4,6 +4,35 @@ body {
     color: #e0e0e0;
     padding-bottom: 80px; /* Space for mobile scrolling */
 }
+.intro-card {
+    background: linear-gradient(135deg, #1e1e1e 0%, #1e1e2e 100%);
+    border: 1px solid #3a3a5a;
+}
+.intro-card h1 {
+    color: #a0b4fe;
+}
+#btn-lang {
+    min-width: 2.8rem;
+    font-weight: 600;
+    border-radius: 8px;
+    border-color: #555;
+    color: #ccc;
+}
+#btn-lang:hover {
+    background-color: #3a3a3a;
+    color: #fff;
+}
+.btn-stepper {
+    background-color: #3a3a3a;
+    border-color: #444;
+    color: #e0e0e0;
+    border-radius: 8px;
+}
+.btn-stepper:hover {
+    background-color: #4a4a4a;
+    border-color: #667eea;
+    color: #fff;
+}
 .card {
     border-radius: 16px;
     box-shadow: 0 4px 20px rgba(0,0,0,0.3);

@@ -1,3 +1,108 @@
+// ============================================================
+// i18n: Translations
+// ============================================================
+const translations = {
+    en: {
+        pageTitle: 'VapeMix Pro - E-Liquid Calculator',
+        metaDescription: 'Free DIY e-liquid calculator. Compute exact VG, PG and nicotine booster volumes for your perfect vape mix recipe.',
+        introTitle: 'DIY E-Liquid Calculator',
+        introText: 'VapeMix Pro is a free e-liquid calculator for DIY vaping enthusiasts. Enter your desired volume, VG/PG ratio and nicotine level to instantly get the exact quantities needed to create your perfect custom e-liquid recipe.',
+        configTitle: 'Main Configuration',
+        labelVolume: 'Desired total volume (ml)',
+        labelRatio: 'VG / PG Ratio',
+        labelVgPct: 'VG %',
+        labelPgPct: 'PG %',
+        rangeLeft: '0% VG (100% PG)',
+        rangeRight: '100% VG (0% PG)',
+        nicTitle: 'Nicotine (Optional)',
+        nicToggle: 'Add nicotine',
+        nicBoosterNote: 'We assume the booster (nicotine liquid) has the same VG/PG ratio (%RATIO%) as your target.',
+        labelBoosterConc: 'Booster Concentration',
+        labelNicTarget: 'Desired target',
+        resultsTitle: 'Results (Recipe)',
+        resultsHint: 'You can edit the values below to reverse-calculate the recipe.',
+        labelBooster: 'Nicotine Booster',
+        labelVg: 'Vegetable Glycerine (VG)',
+        labelPg: 'Propylene Glycol (PG)',
+        showCalcs: 'Show calculations',
+        btnSave: 'Save this mix',
+        sevrageTitle: 'Nicotine Reduction Program',
+        sevrageDesc: 'Progressively reduce your nicotine dependency. Choose the amount to subtract from your current target for this new mix.',
+        labelReduction: 'Reduction',
+        btnReduce: 'Reduce',
+        historyTitle: 'Mix History',
+        noHistory: 'No history yet',
+        alertSaved: 'Mix saved to history!',
+        alertSevrageSaved: 'Reduction mix saved successfully!',
+        alertLoaded: 'History entry loaded.',
+        alertZeroNic: 'Congratulations! Your nicotine level has reached 0!',
+        badgeSevrage: 'Reduction',
+        optiMeasureTitle: 'Measurement Optimization:',
+        optiMeasureText: 'Measuring %VAL% ml is difficult. If you target <strong>%IDEAL% mg/ml</strong> of nicotine instead of %CURRENT%, you will use exactly <strong>%ROUND% ml</strong> of booster.',
+        optiApply: 'Apply',
+        dilutionTitle: 'Dilution Alert:',
+        dilutionText: 'You are using a lot of booster (%VAL% ml). Consider buying a higher-concentration booster (e.g. nicotine salt at 20 mg/ml) to leave more room for your pure base.',
+        formulaTitle: 'Calculation details:',
+        formulaBoosterLine: 'Booster Volume = (%VOL%ml &times; %NIC%mg) / %BOOST%mg = %RESULT% ml',
+        formulaBaseReducedLine: 'Base Volume (to add) = %VOL%ml &minus; %BOOST%ml = %REDUCED% ml',
+        formulaBaseSimpleLine: 'Base Volume = %VOL% ml',
+        formulaVgLine: 'VG to add = %BASE%ml &times; %RATIO%% = %RESULT% ml',
+        formulaPgLine: 'PG to add = %BASE%ml &times; %PGRATIO%% = %RESULT% ml',
+        langButton: 'FR',
+    },
+    fr: {
+        pageTitle: 'VapeMix Pro - Calculateur e-liquide',
+        metaDescription: "Calculateur d'e-liquide DIY gratuit. Calculez les volumes exacts de VG, PG et booster de nicotine pour votre mélange parfait.",
+        introTitle: "Calculateur d'e-liquide DIY",
+        introText: "VapeMix Pro est un calculateur d'e-liquide gratuit pour les passionnés de DIY. Entrez le volume désiré, le ratio VG/PG et le taux de nicotine pour obtenir instantanément les quantités exactes à mélanger pour créer votre recette d'e-liquide parfaite.",
+        configTitle: 'Configuration Principale',
+        labelVolume: 'Volume total désiré (ml)',
+        labelRatio: 'Ratio VG / PG',
+        labelVgPct: 'VG %',
+        labelPgPct: 'PG %',
+        rangeLeft: '0% VG (100% PG)',
+        rangeRight: '100% VG (0% PG)',
+        nicTitle: 'Nicotine (Optionnel)',
+        nicToggle: 'Ajouter de la nicotine',
+        nicBoosterNote: 'Nous assumons que le booster (liquide nicotiné) possède le même ratio VG/PG (%RATIO%) que votre cible.',
+        labelBoosterConc: 'Concentration Booster',
+        labelNicTarget: 'Cible désirée',
+        resultsTitle: 'Résultats (Recette)',
+        resultsHint: "Vous pouvez modifier les valeurs ci-dessous pour recalculer la recette à l'envers.",
+        labelBooster: 'Booster Nicotiné',
+        labelVg: 'Glycérine (VG)',
+        labelPg: 'Propylène (PG)',
+        showCalcs: 'Voir les calculs',
+        btnSave: 'Sauvegarder ce mélange',
+        sevrageTitle: 'Programme de Sevrage',
+        sevrageDesc: 'Réduisez progressivement votre dépendance à la nicotine. Choisissez la quantité à soustraire de votre cible actuelle pour ce nouveau mélange.',
+        labelReduction: 'Réduction',
+        btnReduce: 'Réduire',
+        historyTitle: 'Historique des mélanges',
+        noHistory: 'Aucun historique',
+        alertSaved: "Mélange sauvegardé dans l'historique !",
+        alertSevrageSaved: 'Mélange de réduction sauvegardé avec succès !',
+        alertLoaded: 'Historique chargé.',
+        alertZeroNic: 'Félicitations ! Votre taux de nicotine a atteint 0 !',
+        badgeSevrage: 'Sevrage',
+        optiMeasureTitle: 'Optimisation de mesure :',
+        optiMeasureText: 'Mesurer %VAL% ml est difficile. Si vous visez <strong>%IDEAL% mg/ml</strong> de nicotine à la place de %CURRENT%, vous utiliserez exactement <strong>%ROUND% ml</strong> de booster.',
+        optiApply: 'Appliquer',
+        dilutionTitle: 'Alerte de dilution :',
+        dilutionText: 'Vous utilisez beaucoup de booster (%VAL% ml). Envisagez d\'acheter un booster avec une plus forte teneur (ex : sel de nicotine à 20 mg/ml) si le vôtre est plus bas, pour laisser plus de place à votre base pur.',
+        formulaTitle: 'Détails du calcul :',
+        formulaBoosterLine: 'Volume Booster = (%VOL%ml &times; %NIC%mg) / %BOOST%mg = %RESULT% ml',
+        formulaBaseReducedLine: 'Volume Base (à ajouter) = %VOL%ml &minus; %BOOST%ml = %REDUCED% ml',
+        formulaBaseSimpleLine: 'Volume Base = %VOL% ml',
+        formulaVgLine: 'VG à ajouter = %BASE%ml &times; %RATIO%% = %RESULT% ml',
+        formulaPgLine: 'PG à ajouter = %BASE%ml &times; %PGRATIO%% = %RESULT% ml',
+        langButton: 'EN',
+    }
+};
+
+// Current active language
+let currentLang = 'en';
+
 // Configuration principale / State de l'application
 let state = {
     volume: 50,
@@ -112,13 +217,14 @@ function updateUIInputs() {
     el.inRatio.value = Math.round(state.ratioVg);
     el.inVgPercent.value = Math.round(state.ratioVg);
     el.inPgPercent.value = 100 - Math.round(state.ratioVg);
-    el.boosterRatioText.innerText = `${Math.round(state.ratioVg)}/${100 - Math.round(state.ratioVg)}`;
+    // Re-query booster-ratio-text in case the booster-note innerHTML was rebuilt by setLanguage
+    const boosterRatioEl = document.getElementById('booster-ratio-text');
+    if (boosterRatioEl) boosterRatioEl.innerText = `${Math.round(state.ratioVg)}/${100 - Math.round(state.ratioVg)}`;
     el.inNicTarget.value = round2(state.nicTarget);
     
     // Afficher/Cacher la carte de sevrage
-    const sevrageContainer = document.getElementById('sevrage-container');
-    if (sevrageContainer) {
-        sevrageContainer.style.display = (state.useNicotine && state.nicTarget > 0) ? 'block' : 'none';
+    if (el.sevrageContainer) {
+        el.sevrageContainer.style.display = (state.useNicotine && state.nicTarget > 0) ? 'block' : 'none';
     }
 }
 
@@ -133,35 +239,34 @@ function checkOptimizations() {
     el.optiContainer.innerHTML = ''; // Clear old optimisations
     if (!state.useNicotine) return;
 
+    const t = translations[currentLang];
     let optiHTML = '';
     
     // Optimisation 1: Mesure du booster complexe
-    // Si les décimales ne sont pas faciles à mesurer (ex: 1.33 au lieu de 1.5)
     let boosterDec = state.outBooster % 1;
     if (boosterDec > 0.05 && boosterDec < 0.95 && (Math.abs(boosterDec - 0.5) > 0.05)) {
-        // Trouver la cible de nicotine pour un compte rond (arrondi au 0.5 ml près)
         let idealBoosterVol = Math.round(state.outBooster * 2) / 2; 
-        if(idealBoosterVol === 0) idealBoosterVol = 0.5; // minimum
-        
+        if(idealBoosterVol === 0) idealBoosterVol = 0.5;
         let idealNicTarget = (idealBoosterVol * state.nicBooster) / state.volume;
         
         optiHTML += `
         <div class="suggestion-box">
-            <i class="fa-solid fa-lightbulb text-warning"></i> <strong>Optimisation de mesure :</strong><br>
-            Mesurer ${round2(state.outBooster)} ml est difficile. 
-            Si vous visez <strong>${round2(idealNicTarget)} mg/ml</strong> de nicotine à la place de ${round2(state.nicTarget)}, 
-            vous utiliserez exactement <strong>${idealBoosterVol} ml</strong> de booster.
-            <button class="btn btn-sm btn-outline-success w-100 mt-2" onclick="applyOptimization(${idealNicTarget}, 'nicTarget')">Appliquer</button>
+            <i class="fa-solid fa-lightbulb text-warning"></i> <strong>${t.optiMeasureTitle}</strong><br>
+            ${t.optiMeasureText
+                .replace('%VAL%', round2(state.outBooster))
+                .replace('%IDEAL%', round2(idealNicTarget))
+                .replace('%CURRENT%', round2(state.nicTarget))
+                .replace('%ROUND%', idealBoosterVol)}
+            <button class="btn btn-sm btn-outline-success w-100 mt-2" onclick="applyOptimization(${idealNicTarget}, 'nicTarget')">${t.optiApply}</button>
         </div>`;
     }
 
     // Optimisation 2: Ratio Booster/Base inefficace
-    // Si on utilise plus de 50% de la bouteille juste en booster
     if (state.outBooster > (state.volume * 0.5)) {
         optiHTML += `
         <div class="suggestion-box mt-2 border-warning" style="background-color: rgba(255, 193, 7, 0.1);">
-            <i class="fa-solid fa-triangle-exclamation text-warning"></i> <strong>Alerte de dilution :</strong><br>
-            Vous utilisez beaucoup de booster (${round2(state.outBooster)} ml). Envisagez d'acheter un booster avec une plus forte teneur (ex: sel de nicotine à 20mg/ml) si le vôtre est plus bas, pour laisser plus de place à votre base pur.
+            <i class="fa-solid fa-triangle-exclamation text-warning"></i> <strong>${t.dilutionTitle}</strong><br>
+            ${t.dilutionText.replace('%VAL%', round2(state.outBooster))}
         </div>`;
     }
 
@@ -178,16 +283,30 @@ window.applyOptimization = function(val, type) {
 
 
 function generateFormulas() {
-    let text = `<strong>Détails du calcul:</strong><br>`;
+    const t = translations[currentLang];
+    let text = `<strong>${t.formulaTitle}</strong><br>`;
     if(state.useNicotine) {
-        text += `Volume Booster = (${round2(state.volume)}ml * ${round2(state.nicTarget)}mg) / ${round2(state.nicBooster)}mg = ${round2(state.outBooster)} ml<br>`;
-        text += `Volume Base (à ajouter) = ${round2(state.volume)}ml - ${round2(state.outBooster)}ml = ${round2(state.volume - state.outBooster)} ml<br>`;
+        text += t.formulaBoosterLine
+            .replace('%VOL%', round2(state.volume))
+            .replace('%NIC%', round2(state.nicTarget))
+            .replace('%BOOST%', round2(state.nicBooster))
+            .replace('%RESULT%', round2(state.outBooster)) + '<br>';
+        text += t.formulaBaseReducedLine
+            .replace('%VOL%', round2(state.volume))
+            .replace('%BOOST%', round2(state.outBooster))
+            .replace('%REDUCED%', round2(state.volume - state.outBooster)) + '<br>';
     } else {
-        text += `Volume Base = ${round2(state.volume)} ml<br>`;
+        text += t.formulaBaseSimpleLine.replace('%VOL%', round2(state.volume)) + '<br>';
     }
     let base = state.volume - state.outBooster;
-    text += `VG à ajouter = ${round2(base)}ml * ${Math.round(state.ratioVg)}% = ${round2(state.outVg)} ml<br>`;
-    text += `PG à ajouter = ${round2(base)}ml * ${100 - Math.round(state.ratioVg)}% = ${round2(state.outPg)} ml`;
+    text += t.formulaVgLine
+        .replace('%BASE%', round2(base))
+        .replace('%RATIO%', Math.round(state.ratioVg))
+        .replace('%RESULT%', round2(state.outVg)) + '<br>';
+    text += t.formulaPgLine
+        .replace('%BASE%', round2(base))
+        .replace('%PGRATIO%', 100 - Math.round(state.ratioVg))
+        .replace('%RESULT%', round2(state.outPg));
     
     el.formulasDisplay.innerHTML = text;
 }
@@ -218,6 +337,45 @@ function showAlert(msg, type="success") {
     setTimeout(() => { document.getElementById('alertContainer').innerHTML = ''; }, 4000);
 }
 
+// ============================================================
+// i18n: Apply language to the DOM
+// ============================================================
+function setLanguage(lang) {
+    currentLang = lang;
+    localStorage.setItem('vapemix_lang', lang);
+    const t = translations[lang];
+
+    // Update html lang attribute
+    document.documentElement.lang = lang;
+
+    // Update page title and meta description
+    document.title = t.pageTitle;
+    const metaDesc = document.querySelector('meta[name="description"]');
+    if (metaDesc) metaDesc.setAttribute('content', t.metaDescription);
+
+    // Update all data-i18n elements
+    document.querySelectorAll('[data-i18n]').forEach(node => {
+        const key = node.dataset.i18n;
+        if (t[key] !== undefined) node.textContent = t[key];
+    });
+
+    // Update booster note (contains a nested dynamic span for the ratio)
+    const boosterNote = document.getElementById('booster-note');
+    if (boosterNote) {
+        const ratio = `${Math.round(state.ratioVg)}/${100 - Math.round(state.ratioVg)}`;
+        boosterNote.innerHTML = `<i class="fa-solid fa-circle-info"></i> ${t.nicBoosterNote.replace('%RATIO%', `<span id="booster-ratio-text">${ratio}</span>`)}`;
+    }
+
+    // Update language toggle button label
+    const btnLang = document.getElementById('btn-lang');
+    if (btnLang) btnLang.textContent = t.langButton;
+
+    // Refresh dynamic JS-generated content
+    renderHistory();
+    generateFormulas();
+    checkOptimizations();
+}
+
 // -- Event Listeners Entrées (Forward) --
 el.inVol.addEventListener('input', (e) => { state.volume = parseFloat(e.target.value) || 0; calculateForward(); });
 el.inRatio.addEventListener('input', (e) => { state.ratioVg = parseFloat(e.target.value) || 0; calculateForward(); });
@@ -246,6 +404,26 @@ el.inUseNic.addEventListener('change', (e) => {
     calculateForward();
 });
 
+// -- Volume stepper buttons --
+document.getElementById('btn-vol-dec').addEventListener('click', () => {
+    let v = Math.max(1, (parseFloat(el.inVol.value) || 1) - 1);
+    el.inVol.value = v;
+    state.volume = v;
+    calculateForward();
+});
+
+document.getElementById('btn-vol-inc').addEventListener('click', () => {
+    let v = (parseFloat(el.inVol.value) || 0) + 1;
+    el.inVol.value = v;
+    state.volume = v;
+    calculateForward();
+});
+
+// -- Language toggle --
+document.getElementById('btn-lang').addEventListener('click', () => {
+    setLanguage(currentLang === 'en' ? 'fr' : 'en');
+});
+
 // -- Event Listeners Sorties (Reverse) --
 // Note: Use 'change' instead of 'input' for outputs to avoid crazy recalculation loops while typing
 el.outBooster.addEventListener('change', () => calculateReverse('booster'));
@@ -255,11 +433,13 @@ el.outPg.addEventListener('change', () => calculateReverse('pg'));
 
 
 function saveHistory(isSevrage = false) {
+    const t = translations[currentLang];
     let history = JSON.parse(localStorage.getItem('vapemix_history') || '[]');
     
+    const locale = currentLang === 'fr' ? 'fr-FR' : 'en-CA';
     let record = {
         id: Date.now(),
-        date: new Date().toLocaleString('fr-FR', {day: '2-digit', month: '2-digit', year:'numeric', hour:'2-digit', minute:'2-digit'}),
+        date: new Date().toLocaleString(locale, {day: '2-digit', month: '2-digit', year:'numeric', hour:'2-digit', minute:'2-digit'}),
         state: JSON.parse(JSON.stringify(state)), // Deep clone state
         isSevrage: isSevrage
     };
@@ -269,13 +449,14 @@ function saveHistory(isSevrage = false) {
     
     localStorage.setItem('vapemix_history', JSON.stringify(history));
     renderHistory();
-    showAlert(isSevrage ? "Mélange de réduction sauvegardé avec succès !" : "Mélange sauvegardé dans l'historique !");
+    showAlert(isSevrage ? t.alertSevrageSaved : t.alertSaved);
 }
 
 function renderHistory() {
+    const t = translations[currentLang];
     let history = JSON.parse(localStorage.getItem('vapemix_history') || '[]');
     if(history.length === 0) {
-        el.historyList.innerHTML = '<div class="text-center text-muted p-3">Aucun historique</div>';
+        el.historyList.innerHTML = `<div class="text-center text-muted p-3">${t.noHistory}</div>`;
         return;
     }
 
@@ -284,7 +465,7 @@ function renderHistory() {
         let title = `${h.state.volume}ml - ${Math.round(h.state.ratioVg)}VG/${100-Math.round(h.state.ratioVg)}PG`;
         if(h.state.useNicotine) title += ` - ${round2(h.state.nicTarget)}mg`;
         
-        let badge = h.isSevrage ? `<span class="badge bg-danger ms-2">Sevrage</span>` : '';
+        let badge = h.isSevrage ? `<span class="badge bg-danger ms-2">${t.badgeSevrage}</span>` : '';
 
         html += `
         <div class="list-group-item history-item d-flex justify-content-between align-items-center" onclick="loadHistoryItem(${h.id})">
@@ -311,17 +492,18 @@ window.loadHistoryItem = function(id) {
         
         calculateForward(); // Recalculate to ensure UI syncs perfectly
         window.scrollTo({ top: 0, behavior: 'smooth' });
-        showAlert("Historique chargé.");
+        showAlert(translations[currentLang].alertLoaded);
     }
 }
 
 // Sevrage Action
 document.getElementById('btn-sevrage').addEventListener('click', () => {
+    const t = translations[currentLang];
     let reduction = parseFloat(document.getElementById('in-sevrage-step').value) || 0;
     if(state.nicTarget - reduction < 0) {
         state.nicTarget = 0;
         state.useNicotine = false;
-        showAlert("Félicitation ! Votre taux de nicotine a atteint 0 !");
+        showAlert(t.alertZeroNic);
     } else {
         state.nicTarget -= reduction;
     }
@@ -338,6 +520,16 @@ document.getElementById('btn-sevrage').addEventListener('click', () => {
 document.getElementById('btn-save').addEventListener('click', () => saveHistory(false));
 
 function init() {
+    // Detect language: localStorage > browser > default 'en'
+    const savedLang = localStorage.getItem('vapemix_lang');
+    if (savedLang && translations[savedLang]) {
+        currentLang = savedLang;
+    } else if (navigator.language && navigator.language.toLowerCase().startsWith('fr')) {
+        currentLang = 'fr';
+    } else {
+        currentLang = 'en';
+    }
+
     // Load last state from history if exists
     let history = JSON.parse(localStorage.getItem('vapemix_history') || '[]');
     if(history.length > 0) {
@@ -346,8 +538,8 @@ function init() {
         toggleNicotineSections(state.useNicotine);
     }
     
-    calculateForward();
-    renderHistory();
+    calculateForward();       // Calculate state and populate output values
+    setLanguage(currentLang); // Apply all translations (also refreshes formulas/history/optimizations)
 }
 
 // Start App
