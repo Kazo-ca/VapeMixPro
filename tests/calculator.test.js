@@ -167,3 +167,24 @@ test('sevrage: réduction invalide refusée', () => {
     assert.equal(applyReduction(BASE, NaN).ok, false);
     assert.equal(applyReduction(BASE, 0).ok, false);
 });
+
+test('sevrage: une réduction trop petite pour changer la cible est refusée', () => {
+    assert.equal(applyReduction(BASE, 0.001).ok, false);
+});
+
+test('sevrage jusqu\'à 0 respecte un cadenas sur la VG (ml)', () => {
+    const res = applyReduction(BASE, 3, ['outVg']);
+    assert.ok(res.ok);
+    near(res.state.outVg, 25.5);
+    near(res.state.volume, 50);
+    near(res.state.outPg, 24.5);
+});
+
+test('activer la nicotine avec la VG (ml) verrouillée garde la VG', () => {
+    const noNic = solve({ ...BASE, useNicotine: false }, 'none').state;
+    const res = solve({ ...noNic, useNicotine: true }, 'nicTarget', 3, ['outVg']);
+    assert.ok(res.ok);
+    near(res.state.outVg, noNic.outVg);
+    near(res.state.nicTarget, 3);
+    near(res.state.volume, 50);
+});

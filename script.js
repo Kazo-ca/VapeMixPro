@@ -10,6 +10,7 @@ const STORAGE_CURRENT = 'vapemix_current';
 const STORAGE_LANG = 'vapemix_lang';
 const HISTORY_MAX = 10;
 const MAX_LOCKS = 2;
+const NICOTINE_FIELDS = ['nicTarget', 'outBooster'];
 const ALERT_DURATION_MS = 4000;
 
 const ERROR_KEYS = {
@@ -132,6 +133,8 @@ function applyChange(field, value, sourceInput) {
 
 function commitState(nextState, skipInput) {
     state = nextState;
+    // Sans nicotine, les cadenas de la nicotine et du booster sont cachés : on les libère
+    if (!state.useNicotine) locks = locks.filter(f => !NICOTINE_FIELDS.includes(f));
     clearFieldError();
     render(skipInput);
     persistCurrent();
@@ -347,7 +350,7 @@ function setLanguage(lang) {
 
     // Les nombres changent de séparateur décimal (virgule en français)
     const step = parseDecimal(el.inSevrageStep.value);
-    if (!Number.isNaN(step)) el.inSevrageStep.value = fmt(step);
+    if (!Number.isNaN(step)) el.inSevrageStep.value = fmt(step, 3);
 
     clearFieldError();
     render();
@@ -382,8 +385,9 @@ el.inRatio.addEventListener('input', (e) => applyChange('ratioVg', parseFloat(e.
 el.inUseNic.addEventListener('change', (e) => {
     const useNicotine = e.target.checked;
     if (!useNicotine && state.nicTarget > 0) lastNicTarget = state.nicTarget;
-    const nicTarget = useNicotine && state.nicTarget <= 0 ? lastNicTarget : state.nicTarget;
-    const res = solve({ ...state, useNicotine, nicTarget }, 'none', undefined, locks);
+    const res = useNicotine
+        ? solve({ ...state, useNicotine }, 'nicTarget', state.nicTarget > 0 ? state.nicTarget : lastNicTarget, locks)
+        : solve({ ...state, useNicotine }, 'none', undefined, locks);
     if (!res.ok) {
         e.target.checked = state.useNicotine;
         showFieldError(null, res.error);
@@ -418,8 +422,14 @@ document.getElementById('btn-lang').addEventListener('click', () => {
 // ============================================================
 // Historique
 // ============================================================
-function saveHistory(isSevrage = false) {
+function readHistory() {
     const history = readJson(STORAGE_HISTORY, []);
+    if (!Array.isArray(history)) return [];
+    return history.filter(h => h && h.state && typeof h.state === 'object' && Number.isFinite(h.id));
+}
+
+function saveHistory(isSevrage = false) {
+    const history = readHistory();
     const locale = currentLang === 'fr' ? 'fr-CA' : 'en-CA';
     const record = {
         id: Date.now(),
@@ -439,7 +449,7 @@ function escapeHtml(text) {
 
 function renderHistory() {
     const tr = t();
-    const history = readJson(STORAGE_HISTORY, []);
+    const history = readHistory();
     if (history.length === 0) {
         el.historyList.innerHTML = `<div class="text-center text-muted p-3">${tr.noHistory}</div>`;
         return;
@@ -467,11 +477,15 @@ function renderHistory() {
 }
 
 function loadHistoryItem(id) {
-    const history = readJson(STORAGE_HISTORY, []);
-    const item = history.find(h => h.id === id);
+    const item = readHistory().find(h => h.id === id);
     if (!item) return;
+    // La recette chargée doit être reproduite telle quelle : on libère les cadenas
     const res = solve({ ...DEFAULT_STATE, ...item.state }, 'none');
-    if (!res.ok) return;
+    if (!res.ok) {
+        showFieldError(null, res.error);
+        return;
+    }
+    locks = [];
     commitState(res.state, null);
     window.scrollTo({ top: 0, behavior: 'smooth' });
     showAlert(t().alertLoaded);
@@ -509,13 +523,14 @@ document.getElementById('btn-save').addEventListener('click', () => saveHistory(
 function loadInitialState() {
     // Priorité : recette en cours > dernier mélange de l'historique > valeurs par défaut
     const current = readJson(STORAGE_CURRENT, null);
-    const history = readJson(STORAGE_HISTORY, []);
+    const history = readHistory();
     const saved = current && current.state ? current.state : (history[0] && history[0].state);
     if (current && Array.isArray(current.locks)) {
-        locks = current.locks.filter(f => FIELDS.includes(f)).slice(0, MAX_LOCKS);
+        locks = [...new Set(current.locks.filter(f => FIELDS.includes(f)))].slice(0, MAX_LOCKS);
     }
     const res = solve({ ...DEFAULT_STATE, ...(saved || {}) }, 'none');
     state = res.ok ? res.state : solve(DEFAULT_STATE, 'none').state;
+    if (!state.useNicotine) locks = locks.filter(f => !NICOTINE_FIELDS.includes(f));
     if (state.nicTarget > 0) lastNicTarget = state.nicTarget;
 }
 

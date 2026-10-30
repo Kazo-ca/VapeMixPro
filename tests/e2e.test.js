@@ -88,6 +88,28 @@ test('e2e', { skip: !playwright && 'playwright non installé' }, async (t) => {
         await context.close();
     });
 
+    await t.test('désactiver la nicotine libère ses cadenas cachés', async () => {
+        const { page, errors, context } = await openApp(browser, 'en-US');
+        await page.check('#in-use-nic');
+        await page.click('[data-lock="nicTarget"]');
+        await page.click('[data-lock="outBooster"]');
+        await page.uncheck('#in-use-nic');
+        await page.click('[data-lock="volume"]');
+        assert.equal(await page.getAttribute('[data-lock="volume"]', 'aria-pressed'), 'true');
+        assert.equal(await page.getAttribute('[data-lock="nicTarget"]', 'aria-pressed'), 'false');
+        assert.deepEqual(errors, []);
+        await context.close();
+    });
+
+    await t.test('un historique corrompu ne bloque pas le démarrage', async () => {
+        const { page, errors, context } = await openApp(browser, 'en-US');
+        await page.evaluate(() => localStorage.setItem('vapemix_history', '{"oops":1}'));
+        await page.reload();
+        assert.equal(await page.inputValue('#out-vg'), '30');
+        assert.deepEqual(errors, []);
+        await context.close();
+    });
+
     await t.test('la recette en cours et les cadenas sont restaurés au rechargement', async () => {
         const { page, errors, context } = await openApp(browser, 'en-US');
         await typeInto(page, '#in-volume', '120');

@@ -40,7 +40,8 @@
         outBooster: ['volume', 'ratioVg', 'nicTarget', 'outVg', 'outPg'],
         outVg:      ['nicTarget', 'volume', 'ratioVg', 'outBooster', 'outPg'],
         outPg:      ['nicTarget', 'volume', 'ratioVg', 'outBooster', 'outVg'],
-        nicBooster: ['volume', 'ratioVg', 'nicTarget', 'outBooster', 'outVg', 'outPg']
+        nicBooster: ['volume', 'ratioVg', 'nicTarget', 'outBooster', 'outVg', 'outPg'],
+        none:       ['volume', 'ratioVg', 'nicTarget', 'outBooster', 'outVg', 'outPg']
     };
 
     /**
@@ -175,7 +176,8 @@
      * Recalcule le mélange après la modification d'un champ. Ne modifie pas `state`.
      *
      * @param {object} state  { volume, ratioVg, useNicotine, nicBooster, nicTarget, outBooster, outVg, outPg }
-     * @param {string} edited champ modifié (un de FIELDS, 'nicBooster', ou 'none' pour un recalcul simple)
+     * @param {string} edited champ modifié (un de FIELDS, 'nicBooster', ou 'none' pour un recalcul
+     *                        qui garde les cadenas puis le volume, le ratio et la nicotine)
      * @param {number} [value] nouvelle valeur du champ modifié
      * @param {string[]} [locks] champs verrouillés (cadenas)
      * @returns {{ ok: true, state: object } | { ok: false, error: string }}
@@ -190,9 +192,7 @@
             next.outBooster = 0;
         }
 
-        const choice = edited === 'none'
-            ? { keys: ['volume', 'ratioVg', 'nicTarget'] }
-            : chooseKnowns(edited, locks || [], next.useNicotine);
+        const choice = chooseKnowns(edited, locks || [], next.useNicotine);
         if (choice.error) return { ok: false, error: choice.error };
 
         const known = {};
@@ -224,6 +224,7 @@
     function applyReduction(state, reduction, locks) {
         if (!(reduction > 0)) return { ok: false, error: 'invalidReduction' };
         const newTarget = round2(state.nicTarget - reduction);
+        if (newTarget >= state.nicTarget) return { ok: false, error: 'invalidReduction' };
         if (newTarget <= 0) {
             const res = solve(Object.assign({}, state, { useNicotine: false }), 'none', undefined, locks);
             return res.ok ? Object.assign(res, { reachedZero: true }) : res;
