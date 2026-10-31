@@ -8,9 +8,14 @@ Cette application "Single Page" (SPA) a été conçue pour offrir une grande fle
 Ce module est le cœur de l'application, permettant une modification bidirectionnelle des données sans jamais casser la logique de la recette.
 
 *   **Entrées Principales :** Vous définissez le volume total de liquide souhaité (en ml) et le ratio VG/PG cible.
-*   **Réactivité Intelligente :** 
-    *   Si vous forcez une nouvelle quantité de PG (en ml), le système recalcule instantanément le ratio VG/PG pour refléter cette modification.
-    *   Le volume total reste la constante (l'ancre du calcul) autour de laquelle gravitent les bases neutres.
+*   **Réactivité Intelligente :** Toutes les valeurs sont modifiables (volume, ratio, nicotine, booster en ml, VG en ml, PG en ml, concentration du booster). La recette est recalculée en direct, dans les deux sens, sans jamais réécrire le champ en cours de saisie.
+*   **Cadenas 🔒 :** Un cadenas à côté d'une valeur la garde fixe pendant les recalculs ; seules les valeurs non verrouillées s'ajustent (maximum 2 cadenas à la fois). Exemples :
+    *   Sans cadenas, changer le booster (ml) garde le volume total et affiche la concentration finale obtenue.
+    *   Cible de nicotine verrouillée, changer le booster (ml) calcule le volume total qu'on peut produire.
+    *   Ratio verrouillé, changer la VG (ml) calcule le volume total possible avec cette quantité de VG.
+    *   Booster (ml) verrouillé, changer le volume ou la concentration du booster recalcule la nicotine finale.
+*   **Valeurs impossibles :** Si une valeur est impossible (cible plus forte que le booster, volume négatif, cadenas incompatibles), un message s'affiche sous le champ et rien d'autre n'est modifié.
+*   **Décimales :** La virgule (« 1,5 ») et le point (« 1.5 ») sont acceptés dans tous les champs ; l'affichage suit la langue choisie.
 *   **Transparence Mathématique :** Une zone de texte extensible affiche le détail des opérations mathématiques effectuées en arrière-plan. Cela vous permet de valider mentalement ou manuellement les quantités de VG et de PG allouées.
 
 ### 2. Module Nicotine et Optimisation (Optionnel)
@@ -29,11 +34,12 @@ Afin de bien séparer l'aspect "recette" de l'aspect "santé", cette fonctionnal
 ### 4. Persistance et Historique (LocalStorage)
 Toute l'application est conçue pour fonctionner hors-ligne après le premier chargement, sans aucune base de données externe.
 
-*   **Sauvegarde en Temps Réel :** Chaque modification apportée à la recette (volume, ratio, nicotine) est enregistrée instantanément dans le cache de votre navigateur.
+*   **Sauvegarde en Temps Réel :** Chaque modification apportée à la recette (volume, ratio, nicotine, cadenas) est enregistrée instantanément dans le cache de votre navigateur.
 *   **Chargement Automatique :** À l'ouverture de l'application, la dernière recette en cours d'édition est restaurée exactement dans l'état où vous l'avez laissée.
 *   **Journal des Mélanges :** Une section "Historique" liste vos productions précédentes (Date, Volume Total, Ratio VG/PG, Taux de nicotine). Un bouton permet de recharger une ancienne configuration en un clic pour la reproduire.
 
 ### 5. Architecture Technique
-*   **Structure :** Trois fichiers distincts : `index.html` (structure), `style.css` (présentation), `script.js` (logique métier).
-*   **Déploiement :** Publié automatiquement sur GitHub Pages via un workflow CI/CD à chaque push sur `main`.
-*   **Maintenance :** Le code est abondamment commenté, détaillant chaque fonction de calcul croisé pour faciliter de futures mises à jour ou l'ajout de nouveaux modules (comme les arômes). Les classes Bootstrap assurent un rendu parfait sur mobile.
+*   **Structure :** `index.html` (structure), `style.css` (présentation), `calculator.js` (moteur de calcul pur, sans DOM), `i18n.js` (textes EN/FR), `script.js` (interface et événements).
+*   **Tests :** `node --test tests/calculator.test.js` (moteur de calcul). Les tests navigateur `tests/e2e.test.js` utilisent Playwright s'il est installé.
+*   **Déploiement :** Publié automatiquement sur GitHub Pages via `.github/workflows/deploy.yml` à chaque push sur `main` : les tests unitaires s'exécutent d'abord, puis seuls les fichiers du site sont publiés. Les pull requests vers `main` sont testées sans être publiées.
+*   **Maintenance :** Le moteur de calcul est documenté (variables, relations, priorités de recalcul) pour faciliter l'ajout de nouveaux modules (comme les arômes). Les classes Bootstrap assurent un rendu parfait sur mobile.
